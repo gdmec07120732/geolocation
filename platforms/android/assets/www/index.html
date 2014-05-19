@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+        
+        <script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=PSFU4q1xlWeMKHWk0MfLLatQ&v=1.0"></script>
+        
+        <script src="js/jquery-2.0.2.min.js"></script>
+        <script src="js/jquery.mobile-1.4.2.min.js"></script>
+        <script src="phonegap.js"></script>
+        <script type="text/javascript">
+            var map;
+            var point;
+            function mapInitial() {
+                // 百度地图API功能 hello world
+                map = new BMap.Map("container");            // 创建Map实例
+                point = new BMap.Point(116.404, 39.915);    // 创建点坐��?                map.centerAndZoom(point,15);                     // 初始化地��?设置中心点坐标和地图级别��?                map.addControl(new BMap.ZoomControl());          //添加地图缩放控件
+            }
+            document.addEventListener("deviceready", onDeviceReady, false);
+            var watchID;
+            function onDeviceReady(){
+                //创建位置监控
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                console.log("getCurrentPosition");
+            }
+            function onSuccess(position) {
+                console.log(position.coords.latitude+"  "+position.coords.longitude );
+                map.panTo(new BMap.Point(position.coords.longitude,position.coords.latitude));
+            }
+            function onError(error) {
+                alert('错误代码: '    + error.code    + '\n' +
+                        '错误信息: ' + error.message + '\n');
+            }
+            function watchGPS(){
+            }
+            function clearWatchGPS(){
+            }
+        </script>
+
+        
+    </head>
+    <body onload="mapInitial()">
+    <div data-role="page" id="homepage" >
+        <div data-role="header" >
+            <a data-role="button" onclick="watchGPS()">监控位置</a>
+            <h4>PhoneGapGPS</h4>
+            <a data-role="button"  onclick="clearWatchGPS()">关闭监控</a>
+        </div>
+
+        <div data-role="content" style="padding-top:15px;">
+            <div id="container" style="position:absolute;left:0;right:0;top:45px;bottom:20px;"></div>
+        </div>
+        <div data-theme="e" data-role="footer" data-position="fixed"  >
+            <span class="ui-title">Copyright GDMEC 2014</span>
+        </div>
+    </div>
+    </body>
+
+</html>
